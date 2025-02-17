@@ -51,12 +51,14 @@ public class q01 {
          * return : "SIM" ou "NÃO"
          */
 
-        if (palavra.equals(palavraReversa) == true) {
-
-            return "SIM";
-        } else {
-            return "NAO";
+        for (int i = 0; i < palavra.length(); i++) {
+            if (palavra.charAt(i) != palavraReversa.charAt(i)) {
+                return "NAO"; // Se encontrar uma diferença, não é palíndromo
+            }
         }
+    
+        return "SIM"; // Se chegou até aqui, todos os caracteres corresponderam, é palíndromo
+    
 
     }
 

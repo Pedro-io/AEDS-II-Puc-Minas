@@ -3,7 +3,7 @@
 
 int length(char *str) {
     int length = 0;
-    while (str[length] != '\0') {
+    while (str[length] != "\0") {
       length++;
     }
     return length;
@@ -26,8 +26,9 @@ char PalavraReversa(const char *palavra) {
     return palavraReversa;// retorna a palavra 
 }
 
-bool strings_equal(const char *str1, const char *str2) {
-    int i = 0;
+char VerificaString(const char *str1, const char *str2) {
+    
+  int i = 0;
   
     // Loop enquanto ambos os caracteres forem iguais e não chegarmos ao final de nenhuma string
     while (str1[i] != '\0' && str2[i] != '\0') {
@@ -52,15 +53,11 @@ int main()
     char palavra[100]; 
     
 
-    scanf("%s", palavra);
+    scanf("%[^\n]", palavra);
 
     int tamanho = length(palavra);
     
-    while(palavra != "FIM")
-    {
-
-
-    }
+    printf(tamanho);
 
     return 0;
 }

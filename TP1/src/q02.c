@@ -1,65 +1,79 @@
 #include <stdio.h>
-#include <stdbool.h> 
+#include <stdlib.h>
 
-int length(char *str) {
+int length(const char *str) {
     int length = 0;
-    while (str[length] != "\0") {
+    while (str[length] != '\0') {
       length++;
     }
     return length;
   }
 
-char PalavraReversa(const char *palavra) {
-    /* 
-            função para reverter a palavra
-            parametros: 
-            String palavra: string de entrada do usuário que vai ser revertida
+char* PalavraReversa(const char *palavra, int tamanho){
+  
+  char *rev = (char*)malloc((tamanho + 1) * sizeof(char));
 
-            return : String com o reverso da entrada
-       */     
 
-    char palavraReversa[100] = ""; // declara uma variavel String vazia para inserir a palavra reversa 
-    for (int i = palavra - 1 ; i >= 0; i--) { // para cada caracter da palavra de tamanho n 
-        palavraReversa[i] = palavra[i];// insira na posição n(i) da palavra reversa  
-    }
+  for(int i = tamanho - 1, j = 0; i >= 0; i--, j++){
+        
+    rev[j] = palavra[i];
+  }
 
-    return palavraReversa;// retorna a palavra 
+  rev[tamanho] = '\0'; 
+
+  return rev;
 }
 
-char VerificaString(const char *str1, const char *str2) {
-    
-  int i = 0;
-  
-    // Loop enquanto ambos os caracteres forem iguais e não chegarmos ao final de nenhuma string
-    while (str1[i] != '\0' && str2[i] != '\0') {
-      if (str1[i] != str2[i]) {
-        return false; // Caracteres diferentes, strings não são iguais
+
+const char* VerificaString(const char* palavra, const char* palavraReversa, int tamanho) {
+  /* Função para verificar se é um palindrono ou não 
+   * parametros: 
+   *  String palavra: palavra inserida pelo o usuario 
+   *  String palavraReversa: o reverso da palavra inserida pelo usuario 
+   * 
+   * return : "SIM" ou "NÃO"
+   */
+
+  for (int i = 0; i < tamanho; i++) {
+      if (palavra[i] != palavraReversa[i]) {
+          return "NAO"; // Se encontrar uma diferença, não é palíndromo
       }
-      i++;
-    }
-  
-    // Verifica se ambas as strings terminaram ao mesmo tempo
-    // Se uma string terminou antes da outra, elas são diferentes
-    if (str1[i] != '\0' || str2[i] != '\0') {
-      return false; // Uma string é mais longa que a outra
-    }
-  
-    return true; // Todas os caracteres foram iguais e ambas as strings terminaram ao mesmo tempo
   }
+
+  return "SIM"; // Se chegou até aqui, todos os caracteres corresponderam, é palíndromo
+
+
+}
+
 
 
 int main()
+
 {
     char palavra[100]; 
     
-
-    scanf("%[^\n]", palavra);
+    scanf("%s", palavra);
 
     int tamanho = length(palavra);
+
+    char* palavraReversa = PalavraReversa(palavra, tamanho);
     
-    printf(tamanho);
+    
+    while (palavra[0]!='F' && palavra[1] != 'I' && palavra[2] != 'M')
+    {
+      printf("%s\n", VerificaString(palavra, palavraReversa, tamanho));
+
+      scanf("%s", palavra);
+
+      tamanho = length(palavra);
+
+      palavraReversa = PalavraReversa(palavra, tamanho);
+    }
+    
+    printf("%s\n", VerificaString(palavra, palavraReversa, tamanho));
+
+    free(palavraReversa);
 
     return 0;
 }
-
 

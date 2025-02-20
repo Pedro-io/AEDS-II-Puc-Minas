@@ -34,7 +34,7 @@ const char* VerificaString(const char* palavra, const char* palavraReversa, int 
    * return : "SIM" ou "NÃO"
    */
 
-  for (int i = 0; i < tamanho; i++) {
+  for (int i = 0; i < tamanho; i++){
       if (palavra[i] != palavraReversa[i]) {
           return "NAO"; // Se encontrar uma diferença, não é palíndromo
       }
@@ -45,34 +45,39 @@ const char* VerificaString(const char* palavra, const char* palavraReversa, int 
 
 }
 
+int EhFIM(const char *palavra, int tamanho) {
+  return (tamanho == 3 && palavra[0] == 'F' && palavra[1] == 'I' && palavra[2] == 'M');
+}
+
 
 
 int main()
-
 {
-    char palavra[100]; 
+    char palavra[200]; 
     
-    scanf("%s", palavra);
+    scanf("%[^\n]", palavra);
+    getchar();
 
     int tamanho = length(palavra);
 
     char* palavraReversa = PalavraReversa(palavra, tamanho);
     
     
-    while (palavra[0]!='F' && palavra[1] != 'I' && palavra[2] != 'M')
+    while (!EhFIM(palavra, tamanho))
     {
+      
       printf("%s\n", VerificaString(palavra, palavraReversa, tamanho));
 
-      scanf("%s", palavra);
-
+      scanf("%[^\n]", palavra);
+      getchar();
       tamanho = length(palavra);
+
 
       palavraReversa = PalavraReversa(palavra, tamanho);
     }
-    
-    printf("%s\n", VerificaString(palavra, palavraReversa, tamanho));
 
     free(palavraReversa);
+    
 
     return 0;
 }

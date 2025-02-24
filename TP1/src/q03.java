@@ -1,52 +1,52 @@
 import java.util.*;
 
 public class q03 {
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-
-<<<<<<< HEAD
-
-        String entrada = sc.nextLine(); 
-=======
-        String entrada = sc.nextLine();
->>>>>>> ce4e92b258f9a7cc19725e4cd8cef0a5b73864d1
-
-        String resp = Criptografa(entrada);
-
-        System.out.println(resp);
-
-        sc.close();
-
-    }
-
-    public static String Criptografa(String entrada) {
-
-        String resp = "";
 
         
-<<<<<<< HEAD
-        int valorDeslocado;
-        char charDeslocado;
-        String resp = "";
 
-        
-        for(int i = 0; i < entrada.length(); i++){
+        public static void main(String[] args) {
 
-            valorDeslocado = (int) entrada.charAt(i);
-            valorDeslocado = valorDeslocado + 3; 
-            charDeslocado = (char) valorDeslocado;
-            resp += charDeslocado;
+                Scanner sc = new Scanner(System.in);
 
+                String entrada = sc.nextLine();
 
+                while (!EhFIM(entrada)) {
+
+                        String resp = Criptografa(entrada);
+
+                        System.out.println(resp);
+
+                        entrada = sc.nextLine();
+
+                }
+
+                sc.close();
 
         }
 
-        return resp;
-=======
+        public static boolean EhFIM(String entrada) {
+                return (entrada.length() == 3 && entrada.charAt(0) == 'F' && entrada.charAt(1) == 'I'
+                                && entrada.charAt(2) == 'M');
+        }
 
-        return resp; 
+        
 
->>>>>>> ce4e92b258f9a7cc19725e4cd8cef0a5b73864d1
-    }
+        public static String Criptografa(String entrada) {
+
+                int valorDeslocado;
+                char charDeslocado;
+                String resp = "";
+
+                for (int i = 0; i < entrada.length(); i++) {
+
+                        valorDeslocado = (int) entrada.charAt(i);
+                        valorDeslocado = valorDeslocado + 3;
+                        charDeslocado = (char) valorDeslocado;
+                        resp += charDeslocado;
+
+                }
+
+                return resp;
+        }
+
 }

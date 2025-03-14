@@ -1,0 +1,20 @@
+Crie um programa C para ler um conjunto de passagens aéreas cujos vôos partem de Belo Horizonte. As informações a serem armazenadas de uma passagem são: 
+
+- o identificador da passagem áerea (inteiro)
+- o preço da passagem (real de dupla precisão)
+- a data do vôo (formato YYYY-MM-DD)
+- o tempo do vôo (formato HH:mm)
+- a cidade de destino
+
+O arquivo de entrada tem na primeira linha a quantidade de passagens a ser lidas. As linhas seguintes trazem as passagens com as informações de cada passagem.
+
+Seu programa deve imprimir as passagens por linha, no formato:
+id;data;tempo;cidade;preco
+
+Requisitos:
+1) Criar uma estrutura (struct) denominada Passagem para representar uma passagem, com os membros necessários para armazenar as informações de uma passagem;
+2) Criar uma estrutura denominada Data para armazenar a data do vôo, com os membros dia, mes, ano;
+3) Criar uma estrutura denominada Duracao para armazenar o tempo do vôo, com os membros horas, minutos;
+4) Criar uma função para imprimir a data do vôo;
+5) Criar uma função para imprimir o tempo do vôo;
+6) Criar uma função pata imprimir uma passagem.

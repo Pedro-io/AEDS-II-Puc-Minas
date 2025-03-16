@@ -1,0 +1,14 @@
+1) Faça a implementação de uma pilha linear em java para armazenar números inteiros. Siga a descrição do exercício 6 lista 2 disponível em nosso github.
+
+Crie um programa que instancia uma nova pilha e processa as operações conforme solicitadas, obedecendo o seguinte formato:
+ 
+- E X: empilha o número X
+- D: desempilha e imprime o número removido
+- M: imprime a pilha
+- P Y: pesquisa se o número Y está na pilha, imprimindo S caso verdadeiro e N caso contrário
+
+Veja os arquivos de entrada (pub.in) e saída (pub.out).
+
+
+
+2) Repita o exercício 1 em C. Siga a descrição do exercício 7 da lista 2.

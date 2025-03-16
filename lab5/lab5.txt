@@ -1,0 +1,31 @@
+Crie um programa Java para ler um conjunto de passagens aéreas cujos vôos partem de Belo Horizonte. As informações a serem armazenadas de uma passagem são: 
+
+- o identificador da passagem áerea (inteiro)
+- o preço da passagem (real de dupla precisão)
+- a data do vôo (formato YYYY-MM-DD)
+- o tempo do vôo (formato HH:mm)
+- a cidade de destino
+
+O arquivo de entrada tem na primeira linha a quantidade de passagens a serem lidas. As linhas seguintes trazem as informações de cada passagem.
+
+Seu programa deve imprimir as passagens por linha, no formato:
+id;data;tempo;cidade;preco
+
+com o formato de data DD/MM/YYYY.
+
+Requisitos:
+1) Criar uma classe denominada Principal que conterá o método main.
+2) Criar uma classe denominada Data para armazenar a data do vôo, com os atributos dia, mes, ano como inteiros;
+3) Criar uma classe denominada Duracao para armazenar o tempo do vôo, com os atributos horas, minutos como inteiros;
+4) Criar uma classe denominada Passagem para representar uma passagem, com os atributos necessários para armazenar as informações de uma passagem;
+5) Na classe Passagem, criar um método para imprimir a passagem.
+
+
+Arquivos foram enviados aos alunos pelo Canvas (Caixa de Entrada)
+
+
+class Data {
+  private int dia;
+  private int mes;
+  private int ano;
+}

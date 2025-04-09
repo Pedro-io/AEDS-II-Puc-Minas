@@ -8,9 +8,13 @@ void insercao(int* vet, int n){
     {
         tmp = vet[i];
         j = i-1;
-
-        while((j >= 0) && (vet[j] > tmp) )
+        while((j >= 0) && (vet[j] > tmp) ){
+            vet[j+1] = vet[j];
+            j--;
+        }
     }
+
+    vet[j+1] = tmp; 
 }
 
 

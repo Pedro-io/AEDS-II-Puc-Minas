@@ -1,7 +1,7 @@
 package TP2;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class LerArquivo {
 
@@ -29,17 +29,18 @@ public class LerArquivo {
 
 class Show {
 
+    // Atributos da classe
     private String show_id;
     private String type;
     private String title;
     private String director;
-    private String cast[];
+    private String[] cast;
     private String country;
     private String date;
     private String release_year;
     private String rating;
     private String duration;
-    private String listed_in[];
+    private String[] listed_in;
 
     // Construtor 1
     public Show() {
@@ -57,9 +58,30 @@ class Show {
    
     
     // Construtor 2 
-   public Show(String release_year){
+   public Show( String show_id,
+                String type,
+                String title,
+                String director,
+                String[] cast,
+                String country,
+                String date,
+                String release_year,
+                String rating,
+                String duration,
+                String[] listed_in){
 
-    this.release_year = release_year; 
+
+     this.show_id = show_id;
+     this.type = type;
+     this.title = title;
+     this.director = director;
+     this.cast = cast;
+     this.country = country;
+     this.date = date ;
+     this.release_year = release_year;
+     this.rating = rating;
+     this.duration = duration;
+     this.listed_in = listed_in; 
    }
 
 
@@ -155,6 +177,12 @@ class Show {
 
    
 
+   // Método ler
+
+   public static  Show ler(String entrada){
+    
+    return  new Show();
+   }
 
 
    

@@ -10,7 +10,7 @@ public class LerArquivo {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        File file = new File("C:\\Users\\1429338\\Downloads\\AEDS-II-Puc-Minas-main\\TP2\\tmp\\disneyplus.csv");
+        File file = new File("/home/1429338/Aulas/AEDS-II-Puc-Minas/TP2/tmp/disneyplus.csv");
 
         Scanner sc = new Scanner(file);
 
@@ -189,33 +189,44 @@ class Show {
     public Show ler(String entrada) {
 
         Show show = new Show();
-        String[] leituraShow = new String[100];
-        int i = 0, j = 0;
+        String[] leituraShow = new String[1000];
+        int virgula = 0; 
         System.out.println(entrada);
 
-        if (entrada.charAt(i) != '"') {
-            while (entrada.charAt(i) != ',') {
-                leituraShow[j] += entrada.charAt(i);
-                i++;
-            }
-
-            i++; 
-            j++;
-         
-        }
-
-        if (entrada.charAt(i) != ',' && entrada.charAt(i) == '"') {
+        for(int tamanhoEntrada = 0, i = 0 ; tamanhoEntrada < entrada.length(); tamanhoEntrada++, i++){
             
-            i++; 
+            if (entrada.charAt(i) != ',') {
+                
+                leituraShow[virgula] += entrada.charAt(i);
 
-            while (entrada.charAt(i) != '"') {
-                leituraShow[j] += entrada.charAt(i);
-                i++;
+                    
+                }
+
+            else if(entrada.charAt(i) == '"'){
+                for(int j = i+1; j < entrada.length();j++){
+
+                    if(j!= '"'){
+                        
+                    leituraShow[virgula] += entrada.charAt(j);
+
+                    }
+                    else{
+                        i = j;
+                        j = entrada.length();
+                    }
+                }
+                
+                leituraShow[virgula] += entrada.charAt(i);
+                        
+                }
+            else{
+                virgula++;
             }
 
-            j++;
-           
+
+    
         }
+        
 
         for(int k = 0; k < leituraShow.length; k++)
         {

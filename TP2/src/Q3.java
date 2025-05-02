@@ -1,55 +1,78 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Q3 {
 
     public Q3() {
     }
 
+
     public static void main(String[] args) throws Exception {
+        long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
+        int comparacoes = 0; // Contador de comparações
 
-        Scanner entrada = new Scanner(System.in); // Scanner para ler entrada do teclado
-        Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv")); // Scanner para ler o arquivo CSV
-        Show[] listaShows = new Show[10000]; // Vetor para armazenar os objetos Show
-        Show[] entradaShows = new Show[1000]; // Vetor para armazenar os shows que possuem o id da entrada
-        int totalShows = 0; // Contador de quantos shows foram lidos
-        String nomeFilme = null; // Armazena o nome do filme 
-        String linhaLida;
-        Show showAtual;
-        
-        // Lê a primeira linha (cabeçalho) do arquivo e ignora
-        for(String linhaIgnorada = leitorArquivo.nextLine(); leitorArquivo.hasNextLine(); listaShows[totalShows++] = showAtual) {
-            linhaLida = leitorArquivo.nextLine(); // Lê uma linha do arquivo
-            showAtual = new Show(); // Cria novo objeto Show
-            showAtual.ler(linhaLida); // Preenche os dados do show a partir da linha CSV
+        Scanner entrada = new Scanner(System.in);
+        Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
+        Show[] todosShows = new Show[10000];
+        Show[] vetorInseridos = new Show[1000]; // Vetor que receberá os inseridos
+        int totalShows = 0;
+        int totalInseridos = 0;
+
+        // Ler todos shows
+        while (leitorArquivo.hasNextLine()) {
+            String linha = leitorArquivo.nextLine();
+            Show show = new Show();
+            show.ler(linha);
+            todosShows[totalShows++] = show;
         }
 
-        // Enquanto o id for diferente de "FIM"
-        for(String idBuscado = entrada.nextLine(); !idBuscado.equals("FIM"); idBuscado = entrada.nextLine()) {
-            for(int i = 0; i < totalShows; ++i) {
-                if (listaShows[i].getShow_id().equals(idBuscado)) {
-                    entradaShows[i] = listaShows[i];
-                }
-
-            }
-        }
-
-
-        for( String linhaIgnorada = entrada.nextLine(); !nomeFilme.equals("FIM"); nomeFilme = entrada.nextLine()) {
-            for(int i = 0; i < totalShows; ++i) {
-                if (listaShows[i].getTitulo().equals(nomeFilme)) {
-                    listaShows[i].imprimir(); // Imprime os dados do show correspondente
-                }
-                else{
-                    nomeFilme = "FIM"; 
+        //Inserção dos registros
+        String idBuscado = entrada.nextLine();
+        while (!idBuscado.equals("FIM")) {
+            for (int i = 0; i < totalShows; i++) {
+                comparacoes++;
+                if (todosShows[i].getShow_id().equals(idBuscado)) {
+                    vetorInseridos[totalInseridos++] = todosShows[i];
                 }
             }
+            idBuscado = entrada.nextLine();
         }
+
+        // Pesquisas por título
+        String tituloPesquisado = "";
+      //  System.out.println("NAO");
+        while (!tituloPesquisado.equals("FIM")) {
+            boolean encontrado = false;
+
+            for (int i = 0; i < totalInseridos; i++) {
+                comparacoes++;
+                if (!encontrado && vetorInseridos[i].getTitulo().equals(tituloPesquisado)) {
+                    encontrado = true;
+                }
+            }
+
+            if (encontrado) {
+                System.out.println("SIM");
+            } else {
+                System.out.println("NAO");
+            }
+
+            tituloPesquisado = entrada.nextLine();
+        }
+
         entrada.close();
         leitorArquivo.close();
-    }
 
+        long fimTempo = System.currentTimeMillis(); // Termina a contagem de tempo
+        double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
+
+        // Criar o arquivo de log
+        FileWriter log = new FileWriter("MATRICULA_sequencial.txt");
+        log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
+        log.close();
+    }
 }
+
 
 class Show {
     private String show_id;
@@ -196,12 +219,12 @@ class Show {
     }
 
     // Retorna o ID do show
-    public Object getShow_id() {
+    public String getShow_id() {
         return this.show_id;
     }
 
 
-    public Object getTitulo(){
+    public String getTitulo(){
         return this.titulo; 
     }
 }

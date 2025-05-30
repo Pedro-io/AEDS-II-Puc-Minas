@@ -1,13 +1,17 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Q3 {
 
     public Q3() {
     }
 
-    public static void main(String[] args) throws Exception {
 
+    public static void main(String[] args) throws Exception {
+        long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
+        int comparacoes = 0; // Contador de comparações
+
+<<<<<<< HEAD
         Scanner entrada = new Scanner(System.in); // Scanner para ler entrada do teclado
         //Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv")); // Scanner para ler o arquivo CSV
         Scanner leitorArquivo = new Scanner(new File("disneyplus.csv")); // Scanner para ler o arquivo CSV
@@ -49,14 +53,70 @@ public class Q3 {
                 }
                 else{
                     nomeFilme = "FIM"; 
+=======
+        Scanner entrada = new Scanner(System.in);
+        Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
+        Show[] todosShows = new Show[10000];
+        Show[] vetorInseridos = new Show[1000]; // Vetor que receberá os inseridos
+        int totalShows = 0;
+        int totalInseridos = 0;
+
+        // Ler todos shows
+        while (leitorArquivo.hasNextLine()) {
+            String linha = leitorArquivo.nextLine();
+            Show show = new Show();
+            show.ler(linha);
+            todosShows[totalShows++] = show;
+        }
+
+        //Inserção dos registros
+        String idBuscado = entrada.nextLine();
+        while (!idBuscado.equals("FIM")) {
+            for (int i = 0; i < totalShows; i++) {
+                comparacoes++;
+                if (todosShows[i].getShow_id().equals(idBuscado)) {
+                    vetorInseridos[totalInseridos++] = todosShows[i];
+>>>>>>> 9159708a9443f46a7dc8335863af9fcc485aed46
                 }
             }
+            idBuscado = entrada.nextLine();
         }
+
+        // Pesquisas por título
+        String tituloPesquisado = "";
+      //  System.out.println("NAO");
+        while (!tituloPesquisado.equals("FIM")) {
+            boolean encontrado = false;
+
+            for (int i = 0; i < totalInseridos; i++) {
+                comparacoes++;
+                if (!encontrado && vetorInseridos[i].getTitulo().equals(tituloPesquisado)) {
+                    encontrado = true;
+                }
+            }
+
+            if (encontrado) {
+                System.out.println("SIM");
+            } else {
+                System.out.println("NAO");
+            }
+
+            tituloPesquisado = entrada.nextLine();
+        }
+
         entrada.close();
         leitorArquivo.close();
-    }
 
+        long fimTempo = System.currentTimeMillis(); // Termina a contagem de tempo
+        double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
+
+        // Criar o arquivo de log
+        FileWriter log = new FileWriter("MATRICULA_sequencial.txt");
+        log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
+        log.close();
+    }
 }
+
 
 class Show {
     private String show_id;
@@ -203,12 +263,12 @@ class Show {
     }
 
     // Retorna o ID do show
-    public Object getShow_id() {
+    public String getShow_id() {
         return this.show_id;
     }
 
 
-    public Object getTitulo(){
+    public String getTitulo(){
         return this.titulo; 
     }
 }

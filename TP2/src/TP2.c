@@ -369,7 +369,8 @@ int main() {
     
     Show base[MAX_ARRAY_SIZE]; // Array de structs
     int count = 0;
-
+    Show inseridos[MAX_ARRAY_SIZE]; // Array de shows insweidos 
+    int qtdInseridos = 0; 
 
     const char* filename = "/tmp/disneyplus.csv";
     FILE* file = fopen(filename, "r");
@@ -433,10 +434,7 @@ int main() {
                 break; // Encontrou, não precisa continuar procurando
             }
         }
-         // Opcional: Mensagem se não encontrar
-        // if (!encontrado) {
-        //     printf("ID '%s' não encontrado.\n", entrada);
-        // }
+        
 
     }
 

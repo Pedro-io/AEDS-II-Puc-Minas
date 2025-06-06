@@ -11,6 +11,49 @@ public class Q3 {
         long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
         int comparacoes = 0; // Contador de comparações
 
+<<<<<<< HEAD
+        Scanner entrada = new Scanner(System.in); // Scanner para ler entrada do teclado
+        //Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv")); // Scanner para ler o arquivo CSV
+        Scanner leitorArquivo = new Scanner(new File("disneyplus.csv")); // Scanner para ler o arquivo CSV
+
+        Show[] listaShows = new Show[10000]; // Vetor para armazenar os objetos Show
+        Show[] entradaShows = new Show[10000]; // Vetor para armazenar os shows que possuem o id da entrada
+        int totalShows = 0; // Contador de quantos shows foram lidos
+        String nomeFilme = ""; // Armazena o nome do filme 
+        String linhaLida;
+        Show showAtual;
+        
+        // Lê a primeira linha (cabeçalho) do arquivo e ignora
+        for(String linhaIgnorada = leitorArquivo.nextLine(); leitorArquivo.hasNextLine(); listaShows[totalShows++] = showAtual) {
+            linhaLida = leitorArquivo.nextLine(); // Lê uma linha do arquivo
+            showAtual = new Show(); // Cria novo objeto Show
+            showAtual.ler(linhaLida); // Preenche os dados do show a partir da linha CSV
+        }
+
+        // Enquanto o id for diferente de "FIM"
+        for(String idBuscado = entrada.nextLine(); !idBuscado.equals("FIM"); idBuscado = entrada.nextLine()) {
+            for(int i = 0; i < totalShows; ++i) {
+                if (listaShows[i].getShow_id().equals(idBuscado)) {
+                    entradaShows[i] = listaShows[i];
+                   // System.out.println(listaShows[i].getTitulo());
+                }
+
+            }
+        }
+
+
+        for( String linhaIgnorada = entrada.nextLine(); !nomeFilme.equals("FIM"); nomeFilme = entrada.nextLine()) {
+            
+            for(int i = 0; i < totalShows; ++i) {
+
+                System.out.println(listaShows[i].getTitulo());
+
+                if (listaShows[i].getTitulo().equals(nomeFilme)) {
+                    listaShows[i].imprimir();
+                }
+                else{
+                    nomeFilme = "FIM"; 
+=======
         Scanner entrada = new Scanner(System.in);
         Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
         Show[] todosShows = new Show[10000];
@@ -33,6 +76,7 @@ public class Q3 {
                 comparacoes++;
                 if (todosShows[i].getShow_id().equals(idBuscado)) {
                     vetorInseridos[totalInseridos++] = todosShows[i];
+>>>>>>> 9159708a9443f46a7dc8335863af9fcc485aed46
                 }
             }
             idBuscado = entrada.nextLine();

@@ -1,13 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
-/*
- * CLASEE SHOW PARA O TP, O CÓDIGO DA QUESTÃO VAI COMEÇAR DEPOIS DESTA CLASSE
- * VAMOS MANTER ESTE PADRÃO PARA AS PROXIMAS QUESTÕES
- *  OS MÉTODOS DE ORDENAÇÃO OU QUALQUER QUE SEJA A ALTERAÇÃO IRÃO FICAR ABAIXO DA CLASSE SHOW
- * 
- */
 class Show {
     private String show_id;
     private String tipo;
@@ -150,30 +143,17 @@ class Show {
     public String getTitulo() {
        return this.titulo;
     }
-
-    public String getTipo(){
-        return  this.tipo;
-    }
-
-    public String getDirector(){
-        return this.diretor;
-    }
  }
  
- /***************************************************************************************
-  **************************************************************************************
-  **************************************************************************************
-  **************************************************************************************
-  * O CÓDIGO PARA A QUETÃO COMEÇA AQUI, LOGO EM SEGUIDA TEMOS O MAIN *******************
-  */
 
 
- public class q9{
+
+ public class q15{
 
     public static void main(String[] args) throws Exception {
         long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
         int comparacoes = 0; // Contador de comparações
-
+        int movimentacoes = 0; // contador de movimentações
         Scanner entrada = new Scanner(System.in);
         Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
         Show[] todosShows = new Show[10000];
@@ -201,10 +181,25 @@ class Show {
             idBuscado = entrada.nextLine();
         }
 
-        heapSort(vetorInseridos, totalInseridos); 
+        // Ordena os shows encontrados
+        Show tmp;
+        for(int i = 0; i < totalInseridos -1; i++){
+            int menor = i; 
+            for(int j = (i +1); j< totalInseridos; j++ ){
+
+                if(vetorInseridos[menor].getTitulo().compareTo(vetorInseridos[j].getTitulo()) > 0){
+                    menor = j;
+                }
+            }
+            tmp = vetorInseridos[i];
+            vetorInseridos[i] = vetorInseridos[menor];
+            vetorInseridos[menor] = tmp;
+            movimentacoes += 3; // troca de posições = 3 movimentações (2 acessos + 1 atribuição)
+
+        }
 
         // Printando os resultados
-        for(int i = 0; i < totalInseridos; i ++){
+        for(int i = 0; i < 10; i ++){
             vetorInseridos[i].imprimir();
         }
 
@@ -215,53 +210,8 @@ class Show {
         double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
 
         // Criar o arquivo de log
-        FileWriter log = new FileWriter("matricula_heapsort.txt");
-        log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
-        log.close();
-    }
-
-
-    public static void heapSort(Show[] array, int n) {
-        // Construir Max-Heap
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(array, n, i);
-        }
-    
-        // Extrair um por um do heap
-        for (int i = n - 1; i > 0; i--) {
-            swap(array, 0, i);
-            heapify(array, i, 0);
-        }
-    }
-    
-    private static void heapify(Show[] array, int n, int i) {
-        int maior = i;
-        int esq = 2 * i + 1;
-        int dir = 2 * i + 2;
-    
-        if (esq < n && (
-            array[esq].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[esq].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[esq].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = esq;
-        }
-    
-        if (dir < n && (
-            array[dir].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[dir].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[dir].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = dir;
-        }
-    
-        if (maior != i) {
-            swap(array, i, maior);
-            heapify(array, n, maior);
-        }
-    }
-    
-    private static void swap(Show[] array, int i, int j) {
-        Show temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        FileWriter log = new FileWriter("matricula selecao.txt");
+         log.write("793406" + "\t" + comparacoes + "\t" + movimentacoes + "\t" + String.format(Locale.US, "%.3f", tempoExecucao));
+         log.close();
     }
  }

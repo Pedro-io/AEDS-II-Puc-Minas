@@ -378,11 +378,11 @@ int main() {
     char linha[MAX_LINE_SIZE];
 
     // Pular cabeçalho
-    if (fgets(linha, sizeof(linha), file) == NULL) {
-        fprintf(stderr, "Erro ao ler o cabeçalho do arquivo CSV.\n");
-        fclose(file);
-        return 1;
-    }
+    //if (fgets(linha, sizeof(linha), file) == NULL) {
+     //   fprintf(stderr, "Erro ao ler o cabeçalho do arquivo CSV.\n");
+     //   fclose(file);
+     //   return 1;
+    //}
 
     // Ler cada linha do arquivo
     while (count < MAX_ARRAY_SIZE && fgets(linha, sizeof(linha), file) != NULL) {

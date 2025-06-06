@@ -1,13 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
-/*
- * CLASEE SHOW PARA O TP, O CÓDIGO DA QUESTÃO VAI COMEÇAR DEPOIS DESTA CLASSE
- * VAMOS MANTER ESTE PADRÃO PARA AS PROXIMAS QUESTÕES
- *  OS MÉTODOS DE ORDENAÇÃO OU QUALQUER QUE SEJA A ALTERAÇÃO IRÃO FICAR ABAIXO DA CLASSE SHOW
- * 
- */
 class Show {
     private String show_id;
     private String tipo;
@@ -120,26 +113,27 @@ class Show {
           var2[var3++] = var4.trim();
  
           int var6;
+          String var7;
           for(var5 = 0; var5 < var3 - 1; ++var5) {
              for(var6 = var5 + 1; var6 < var3; ++var6) {
                 if (var2[var5].compareTo(var2[var6]) > 0) {
-                   String var7 = var2[var5];
+                   var7 = var2[var5];
                    var2[var5] = var2[var6];
                    var2[var6] = var7;
                 }
              }
           }
  
-          String var8 = "";
+          var7 = "";
  
           for(var6 = 0; var6 < var3; ++var6) {
-             var8 = var8 + var2[var6];
+             var7 = var7 + var2[var6];
              if (var6 < var3 - 1) {
-                var8 = var8 + ", ";
+                var7 = var7 + ", ";
              }
           }
  
-          return var8;
+          return var7;
        }
     }
  
@@ -150,118 +144,149 @@ class Show {
     public String getTitulo() {
        return this.titulo;
     }
-
-    public String getTipo(){
-        return  this.tipo;
+ 
+    public String getTipo() {
+       return this.tipo;
+    }
+ 
+    public String getDirector() {
+       return this.diretor;
     }
 
-    public String getDirector(){
-        return this.diretor;
+    public String getDataAdicionado(){
+        return  this.dataAdicionado;
     }
  }
  
- /***************************************************************************************
-  **************************************************************************************
-  **************************************************************************************
-  **************************************************************************************
-  * O CÓDIGO PARA A QUETÃO COMEÇA AQUI, LOGO EM SEGUIDA TEMOS O MAIN *******************
-  */
+ class q18 {
 
-
- public class q9{
+    public static int comparacoes = 0;
+    public static int movimentacoes = 0;
 
     public static void main(String[] args) throws Exception {
-        long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
-        int comparacoes = 0; // Contador de comparações
+        long inicio = System.currentTimeMillis();
+        Scanner sc = new Scanner(System.in);
+        Scanner leitor = new Scanner(new File("/tmp/disneyplus.csv"));
 
-        Scanner entrada = new Scanner(System.in);
-        Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
-        Show[] todosShows = new Show[10000];
-        Show[] vetorInseridos = new Show[1000]; // Vetor que receberá os inseridos
-        int totalShows = 0;
+        Show[] base = new Show[10000];
+        Show[] inseridos = new Show[1000];
+        int totalBase = 0;
         int totalInseridos = 0;
 
-        // Ler todos shows
-        while (leitorArquivo.hasNextLine()) {
-            String linha = leitorArquivo.nextLine();
-            Show show = new Show();
-            show.ler(linha);
-            todosShows[totalShows++] = show;
+        // Ler base de dados
+        while (leitor.hasNextLine()) {
+            String linha = leitor.nextLine();
+            Show s = new Show();
+            s.ler(linha);
+            base[totalBase++] = s;
         }
 
-        //Inserção dos registros
-        String idBuscado = entrada.nextLine();
-        while (!idBuscado.equals("FIM")) {
-            for (int i = 0; i < totalShows; i++) {
+        // Ler IDs
+        String entrada = sc.nextLine();
+        while (!entrada.equals("FIM")) {
+            for (int i = 0; i < totalBase; i++) {
                 comparacoes++;
-                if (todosShows[i].getShow_id().equals(idBuscado)) {
-                    vetorInseridos[totalInseridos++] = todosShows[i];
+                if (base[i].getShow_id().equals(entrada)) {
+                    inseridos[totalInseridos++] = base[i];
+                    break;
                 }
             }
-            idBuscado = entrada.nextLine();
+            entrada = sc.nextLine();
         }
 
-        heapSort(vetorInseridos, totalInseridos); 
+        // Ordenar por date_added e desempate por title
+        quickSort(inseridos, 0, totalInseridos - 1);
 
-        // Printando os resultados
-        for(int i = 0; i < totalInseridos; i ++){
-            vetorInseridos[i].imprimir();
+        // Imprimir os 10 primeiros
+        for (int i = 0; i < 10 && i < totalInseridos; i++) {
+            inseridos[i].imprimir();
         }
 
-        entrada.close();
-        leitorArquivo.close();
+        // Log
+        long fim = System.currentTimeMillis();
+        double tempo = (fim - inicio) / 1000.0;
+        FileWriter fw = new FileWriter("matricula_quicksort.txt");
+        fw.write("793406\t" + comparacoes + "\t" + movimentacoes + "\t" + String.format(Locale.US, "%.6f", tempo));
+        fw.close();
 
-        long fimTempo = System.currentTimeMillis(); // Termina a contagem de tempo
-        double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
-
-        // Criar o arquivo de log
-        FileWriter log = new FileWriter("matricula_heapsort.txt");
-        log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
-        log.close();
+        sc.close();
+        leitor.close();
     }
 
+    public static int compare(Show a, Show b) {
+        comparacoes++;
+        int cmpData = compararData(a.getDataAdicionado(), b.getDataAdicionado());
+        if (cmpData == 0) {
+            comparacoes++;
+            return a.getTitulo().compareTo(b.getTitulo());
+        }
+        return cmpData;
+    }
 
-    public static void heapSort(Show[] array, int n) {
-        // Construir Max-Heap
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(array, n, i);
+    public static int compararData(String data1, String data2) {
+        int[] d1 = extrairData(data1);
+        int[] d2 = extrairData(data2);
+
+        if (d1[2] != d2[2]) return d1[2] - d2[2]; // ano
+        if (d1[1] != d2[1]) return d1[1] - d2[1]; // mês
+        return d1[0] - d2[0];                     // dia
+    }
+
+    public static int[] extrairData(String data) {
+        int[] valores = {1, 1, 1900};
+        if (data == null || data.equals("NaN")) return valores;
+
+        String[] partes = data.split(" ");
+        if (partes.length < 3) return valores;
+
+        try {
+            valores[0] = Integer.parseInt(partes[1].replace(",", ""));
+            valores[1] = mesParaNumero(partes[0]);
+            valores[2] = Integer.parseInt(partes[2]);
+        } catch (Exception e) {
+            // Ignora valores inválidos
         }
-    
-        // Extrair um por um do heap
-        for (int i = n - 1; i > 0; i--) {
-            swap(array, 0, i);
-            heapify(array, i, 0);
+
+        return valores;
+    }
+
+    public static int mesParaNumero(String mes) {
+        switch (mes.toLowerCase()) {
+            case "january": return 1;
+            case "february": return 2;
+            case "march": return 3;
+            case "april": return 4;
+            case "may": return 5;
+            case "june": return 6;
+            case "july": return 7;
+            case "august": return 8;
+            case "september": return 9;
+            case "october": return 10;
+            case "november": return 11;
+            case "december": return 12;
+            default: return 1;
         }
     }
-    
-    private static void heapify(Show[] array, int n, int i) {
-        int maior = i;
-        int esq = 2 * i + 1;
-        int dir = 2 * i + 2;
-    
-        if (esq < n && (
-            array[esq].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[esq].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[esq].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = esq;
+
+    public static void quickSort(Show[] array, int esq, int dir) {
+        int i = esq, j = dir;
+        Show pivo = array[(esq + dir) / 2];
+
+        while (i <= j) {
+            while (compare(array[i], pivo) < 0) i++;
+            while (compare(array[j], pivo) > 0) j--;
+
+            if (i <= j) {
+                Show temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                movimentacoes += 3;
+                i++;
+                j--;
+            }
         }
-    
-        if (dir < n && (
-            array[dir].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[dir].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[dir].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = dir;
-        }
-    
-        if (maior != i) {
-            swap(array, i, maior);
-            heapify(array, n, maior);
-        }
+
+        if (esq < j) quickSort(array, esq, j);
+        if (i < dir) quickSort(array, i, dir);
     }
-    
-    private static void swap(Show[] array, int i, int j) {
-        Show temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
- }
+}

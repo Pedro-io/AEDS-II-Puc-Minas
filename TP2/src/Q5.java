@@ -153,7 +153,7 @@ class Show {
     public static void main(String[] args) throws Exception {
         long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
         int comparacoes = 0; // Contador de comparações
-
+        int movimentacoes = 0; // contador de movimentações
         Scanner entrada = new Scanner(System.in);
         Scanner leitorArquivo = new Scanner(new File("/tmp/disneyplus.csv"));
         Show[] todosShows = new Show[10000];
@@ -194,6 +194,7 @@ class Show {
             tmp = vetorInseridos[i];
             vetorInseridos[i] = vetorInseridos[menor];
             vetorInseridos[menor] = tmp;
+            movimentacoes += 3; // troca de posições = 3 movimentações (2 acessos + 1 atribuição)
 
         }
 
@@ -209,8 +210,8 @@ class Show {
         double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
 
         // Criar o arquivo de log
-        FileWriter log = new FileWriter("MATRICULA_sequencial.txt");
-        log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
-        log.close();
+        FileWriter log = new FileWriter("matricula selecao.txt");
+         log.write("793406" + "\t" + comparacoes + "\t" + movimentacoes + "\t" + String.format(Locale.US, "%.3f", tempoExecucao));
+         log.close();
     }
  }

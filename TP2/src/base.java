@@ -158,6 +158,35 @@ class Show {
     public String getDirector(){
         return this.diretor;
     }
+
+    public int getAnoLancamento(){
+        return this.anoLancamento;
+    }
+
+  
+    public String getElenco() {
+        return elenco;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public String getDataAdicionado() {
+        return dataAdicionado;
+    }
+
+    public String getClassificacao() {
+        return classificacao;
+    }
+
+    public String getDuracao() {
+        return duracao;
+    }
+
+    public String getCategorias() {
+        return categorias;
+    }
  }
  
  /***************************************************************************************
@@ -168,7 +197,7 @@ class Show {
   */
 
 
- public class q9{
+ public class q11{
 
     public static void main(String[] args) throws Exception {
         long inicioTempo = System.currentTimeMillis(); // Começa a contar o tempo
@@ -201,7 +230,7 @@ class Show {
             idBuscado = entrada.nextLine();
         }
 
-        heapSort(vetorInseridos, totalInseridos); 
+        countingSort(vetorInseridos, totalInseridos); 
 
         // Printando os resultados
         for(int i = 0; i < totalInseridos; i ++){
@@ -221,47 +250,6 @@ class Show {
     }
 
 
-    public static void heapSort(Show[] array, int n) {
-        // Construir Max-Heap
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(array, n, i);
-        }
     
-        // Extrair um por um do heap
-        for (int i = n - 1; i > 0; i--) {
-            swap(array, 0, i);
-            heapify(array, i, 0);
-        }
-    }
     
-    private static void heapify(Show[] array, int n, int i) {
-        int maior = i;
-        int esq = 2 * i + 1;
-        int dir = 2 * i + 2;
-    
-        if (esq < n && (
-            array[esq].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[esq].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[esq].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = esq;
-        }
-    
-        if (dir < n && (
-            array[dir].getDirector().compareTo(array[maior].getDirector()) > 0 ||
-           (array[dir].getDirector().compareTo(array[maior].getDirector()) == 0 &&
-            array[dir].getTitulo().compareTo(array[maior].getTitulo()) > 0))) {
-            maior = dir;
-        }
-    
-        if (maior != i) {
-            swap(array, i, maior);
-            heapify(array, n, maior);
-        }
-    }
-    
-    private static void swap(Show[] array, int i, int j) {
-        Show temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
  }

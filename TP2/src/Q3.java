@@ -67,7 +67,7 @@ public class Q3 {
         double tempoExecucao = (fimTempo - inicioTempo) / 1000.0; // tempo em segundos
 
         // Criar o arquivo de log
-        FileWriter log = new FileWriter("MATRICULA_sequencial.txt");
+        FileWriter log = new FileWriter("matricula_sequencial.txt");
         log.write("793406" + "\t" + tempoExecucao + "\t" + comparacoes);
         log.close();
     }

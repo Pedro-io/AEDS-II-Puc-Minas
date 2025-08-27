@@ -1,51 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int length(const char *str)
-{ // Pega o tamanho do arquivo
-  int length = 0;
-  while (str[length] != '\0')
-  {
-    length++;
+
+int length(const char *str, int tam)
+{
+  if (str[tam] == '\0') {
+    return tam;
   }
-  return length;
+  return length(str, tam + 1);
+}
+
+void montaReversa(const char *palavra, char *rev, int i, int tamanho)
+{
+  if (i == tamanho) {
+    rev[tamanho] = '\0';
+    return;
+  }
+  rev[i] = palavra[tamanho - 1 - i];
+  montaReversa(palavra, rev, i + 1, tamanho);
 }
 
 char *PalavraReversa(const char *palavra, int tamanho)
 {
-  // inverte a palavra
   char *rev = (char *)malloc((tamanho + 1) * sizeof(char));
-
-  for (int i = tamanho - 1, j = 0; i >= 0; i--, j++)
-  {
-
-    rev[j] = palavra[i];
+  if (rev == NULL) {
+    return NULL; 
   }
-
-  rev[tamanho] = '\0';
-
+  montaReversa(palavra, rev, 0, tamanho);
   return rev;
+}
+
+const char *comparaRec(const char *a, const char *b, int i, int tamanho)
+{
+  if (i == tamanho) {
+    return "SIM";
+  }
+  if (a[i] != b[i]) {
+    return "NAO";
+  }
+  return comparaRec(a, b, i + 1, tamanho);
 }
 
 const char *verificaString(const char *palavra, const char *palavraReversa, int tamanho)
 {
-  /* Função para verificar se é um palindrono ou não
-   * parametros:
-   *  String palavra: palavra inserida pelo o usuario
-   *  String palavraReversa: o reverso da palavra inserida pelo usuario
-   *
-   * return : "SIM" ou "NÃO"
-   */
-
-  for (int i = 0; i < tamanho; i++)
-  {
-    if (palavra[i] != palavraReversa[i])
-    {
-      return "NAO"; // Se encontrar uma diferença, não é palíndromo
-    }
-  }
-
-  return "SIM"; // Se chegou até aqui, todos os caracteres corresponderam, é palíndromo
+  return comparaRec(palavra, palavraReversa, 0, tamanho);
 }
 
 int EhFIM(const char *palavra, int tamanho)
@@ -56,24 +54,23 @@ int EhFIM(const char *palavra, int tamanho)
 int main()
 {
   char palavra[2000];
-
   scanf("%[^\n]", palavra);
-  getchar();
+  getchar(); 
 
-  int tamanho = length(palavra);
+  int tamanho = 0;
+  tamanho = length(palavra, tamanho);
   char *palavraReversa = PalavraReversa(palavra, tamanho);
 
   while (!EhFIM(palavra, tamanho))
   {
-
     printf("%s\n", verificaString(palavra, palavraReversa, tamanho));
     free(palavraReversa);
     scanf(" %[^\n]", palavra);
-    tamanho = length(palavra);
+    tamanho = 0;
+    tamanho = length(palavra, tamanho);
     palavraReversa = PalavraReversa(palavra, tamanho);
   }
-
- 
+  free(palavraReversa);
 
   return 0;
 }

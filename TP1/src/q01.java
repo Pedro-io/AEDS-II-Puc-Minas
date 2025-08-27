@@ -23,14 +23,7 @@ public class q01 {
 
     }
 
-    public static String PalavraReversa(String palavra) {
-        /* 
-                função para reverter a palavra
-                parametros: 
-                String palavra: string de entrada do usuário que vai ser revertida
-
-                return : String com o reverso da entrada
-           */     
+    public static String PalavraReversa(String palavra) {   
         palavra = palavra.trim(); // remove espaços em branco
         palavra = palavra.toLowerCase(); // deixa tudo em mauisculo 
 
@@ -43,13 +36,6 @@ public class q01 {
     }
 
     public static String VerificaString(String palavra, String palavraReversa) {
-        /* Função para verificar se é um palindrono ou não 
-         * parametros: 
-         *  String palavra: palavra inserida pelo o usuario 
-         *  String palavraReversa: o reverso da palavra inserida pelo usuario 
-         * 
-         * return : "SIM" ou "NÃO"
-         */
 
         for (int i = 0; i < palavra.length(); i++) {
             if (palavra.charAt(i) != palavraReversa.charAt(i)) {

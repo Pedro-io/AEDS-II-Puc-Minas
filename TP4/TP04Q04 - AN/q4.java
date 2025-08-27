@@ -1,0 +1,567 @@
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+class Shows {
+    private String show_id;
+    private String type;
+    private String title;
+    private String director;
+    private String cast;
+    private String country;
+    private String data_added;
+    private String release_date;
+    private String rating;
+    private String duration;
+    private String listed_in;
+
+    public Shows() {
+    }
+
+    public Shows(String show_id, String type, String title, String director, String cast, String country,
+            String data_added, String release_date, String rating, String duration, String listed_in) {
+        this.show_id = show_id;
+        this.type = type;
+        this.title = title;
+        this.director = director;
+        this.cast = cast;
+        this.country = country;
+        this.data_added = data_added;
+        this.release_date = release_date;
+        this.rating = rating;
+        this.duration = duration;
+        this.listed_in = listed_in;
+
+    }
+
+    public String getShow_id() {
+        return show_id;
+    }
+
+    public void setShow_id(String show_id) {
+        this.show_id = show_id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getCast() {
+        return cast;
+    }
+
+    public void setCast(String cast) {
+        this.cast = cast;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getData_added() {
+        return data_added;
+    }
+
+    public void setData_added(String data_added) {
+        this.data_added = data_added;
+    }
+
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getListed_in() {
+        return listed_in;
+    }
+
+    public void setListed_in(String listed_in) {
+        this.listed_in = listed_in;
+    }
+
+    // Metódo para ler uma linha do CSV e separar seus atributos.
+
+    public static Shows ler(String linha) {
+        Shows show = new Shows();
+        String[] campos = new String[11];
+
+        int campo = 0, i = 0, aspas = 0;
+        String campoAtual = "";
+
+        while (i < linha.length()) {
+            char c = linha.charAt(i);
+
+            if (c == '"') {
+                aspas++;
+
+            } else if (c == ',' && aspas % 2 == 0) {
+                if (campoAtual.length() == 0) {
+                    campos[campo] = "NaN";
+                } else {
+                    campos[campo] = campoAtual;
+                }
+                campo++;
+                campoAtual = "";
+
+            } else {
+                campoAtual += c;
+            }
+            i++;
+        }
+
+        if (campo < 11) {
+            if (campoAtual.length() == 0) {
+                campos[campo] = "NaN";
+            } else {
+                campos[campo] = campoAtual;
+            }
+        }
+
+        for (int j = campo + 1; j < 11; j++) {
+            campos[j] = "NaN";
+        }
+
+        // Atribui os campos lidos aos respectivos atributos da Classe Shows.
+        show.setShow_id(campos[0]);
+        show.setType(campos[1]);
+        show.setTitle(campos[2]);
+        show.setDirector(campos[3]);
+        show.setCast(campos[4]);
+        show.setCountry(campos[5]);
+        show.setData_added(campos[6]);
+        show.setRelease_date(campos[7]);
+        show.setRating(campos[8]);
+        show.setDuration(campos[9]);
+        show.setListed_in(campos[10]);
+
+        return show;
+    }
+
+    // Transforma uma String em uma Lista, separando seus valores.
+
+    public static ListaString transformarEmLista(String s) throws Exception {
+        int n = 1;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ',') {
+                n++;
+            }
+        }
+
+        ListaString lista = new ListaString(n);
+
+        int i = 0;
+        while (i < s.length()) {
+            String nome = "";
+
+            while (i < s.length() && (s.charAt(i) == ' ' || s.charAt(i) == '"')) {
+                i++;
+            }
+
+            while (i < s.length() && s.charAt(i) != ',') {
+                if (s.charAt(i) != '"') {
+                    nome += s.charAt(i);
+                }
+                i++;
+            }
+
+            lista.inserirFim(nome);
+
+            if (i < s.length() && s.charAt(i) == ',')
+                i++;
+        }
+
+        return lista;
+    }
+
+    // Metódo para imprimir os atributos da linha no formato pedido.
+
+    public void imprimir() throws Exception {
+
+        ListaString listaCast = Shows.transformarEmLista(cast);
+        listaCast.ordenar();
+
+        ListaString listaListed_in = Shows.transformarEmLista(listed_in);
+        listaListed_in.ordenar();
+
+        System.out.print("=> " + show_id + " ## " + title + " ## " + type + " ## " + director + " ## [");
+        listaCast.mostrar();
+        System.out.print("] ## " + country + " ## " + data_added + " ## " + release_date + " ## " + rating + " ## "
+                + duration + " ## [");
+        listaListed_in.mostrar();
+        System.out.println("] ##");
+    }
+
+}
+
+class ListaString {
+    private String[] array;
+    public int n;
+
+    public ListaString() {
+
+    }
+
+    public ListaString(int tamanho) {
+        array = new String[tamanho];
+        n = 0;
+    }
+
+    // Metódo para inserção de uma String no fim da lista.
+
+    public void inserirFim(String s) throws Exception {
+        if (n >= array.length) {
+            throw new Exception("Erro");
+        }
+        array[n] = s;
+        n++;
+    }
+
+    // Metódo que ordena os elementos de uma ListaString em ordem alfabética.
+
+    public void ordenar() {
+        String temp;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (comparar(array[i], array[j]) > 0) {
+                    temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+        }
+    }
+
+    // Metódo que compara duas strings em ordem lexicográfica.
+
+    public int comparar(String x, String y) {
+        int resp = 0;
+        for (int i = 0; i < x.length() && i < y.length(); i++) {
+            resp = x.charAt(i) - y.charAt(i);
+            if (resp != 0) {
+                return resp;
+            }
+
+        }
+        resp = x.length() - y.length();
+        return resp;
+    }
+
+    // Metódo que mostra os elementos da Lista.
+
+    public void mostrar() {
+        for (int i = 0; i < n; i++) {
+            System.out.print(array[i]);
+            if (i < n - 1) {
+                System.out.print(", ");
+            }
+        }
+    }
+
+}
+
+class NoAN {
+    public boolean cor;
+    public Shows show;
+    public NoAN esq, dir;
+
+    public NoAN(Shows show) {
+        this(show, false, null, null);
+    }
+
+    public NoAN(Shows show, boolean cor) {
+        this(show, cor, null, null);
+    }
+
+    public NoAN(Shows show, boolean cor, NoAN esq, NoAN dir) {
+        this.cor = cor;
+        this.show = show;
+        this.esq = esq;
+        this.dir = dir;
+    }
+}
+
+class ArvoreALN {
+    static NoAN raiz;
+
+    ArvoreALN() {
+        raiz = null;
+    }
+
+    private NoAN rotacaoDir(NoAN no) {
+        NoAN noEsq = no.esq;
+        NoAN noEsqDir = noEsq.dir;
+
+        noEsq.dir = no;
+        no.esq = noEsqDir;
+
+        return noEsq;
+    }
+
+    private NoAN rotacaoEsq(NoAN no) {
+        NoAN noDir = no.dir;
+        NoAN noDirEsq = noDir.esq;
+
+        noDir.esq = no;
+        no.dir = noDirEsq;
+        return noDir;
+    }
+
+    private NoAN rotacaoDirEsq(NoAN no) {
+        no.dir = rotacaoDir(no.dir);
+        return rotacaoEsq(no);
+    }
+
+    private NoAN rotacaoEsqDir(NoAN no) {
+        no.esq = rotacaoEsq(no.esq);
+        return rotacaoDir(no);
+    }
+
+public void inserir(Shows s) throws Exception {
+      // Se a arvore estiver vazia
+      if (raiz == null) {
+         raiz = new NoAN(s);
+
+      // Senao, se a arvore tiver um elemento
+      } else if (raiz.esq == null && raiz.dir == null) {
+         if (s.getTitle().compareTo(raiz.show.getTitle()) < 0) {
+            raiz.esq = new NoAN(s);
+         } else {
+            raiz.dir = new NoAN(s);
+         }
+
+      // Senao, se a arvore tiver dois elementos (raiz e dir)
+      } else if (raiz.esq == null) {
+         if (s.getTitle().compareTo(raiz.show.getTitle()) < 0) {
+            raiz.esq = new NoAN(s);
+
+         } else if (s.getTitle().compareTo(raiz.show.getTitle()) < 0) {
+            raiz.esq = new NoAN(raiz.show);
+            raiz.show= s;
+
+         } else {
+            raiz.esq = new NoAN(raiz.show);
+            raiz.show= raiz.dir.show;
+            raiz.dir.show = s;
+         }
+         raiz.esq.cor = raiz.dir.cor = false;
+
+      // Senao, se a arvore tiver dois elementos (raiz e esq)
+      } else if (raiz.dir == null) {
+         if (s.getTitle().compareTo(raiz.show.getTitle()) > 0) {
+            raiz.dir = new NoAN(s);
+
+         } else if (s.getTitle().compareTo(raiz.show.getTitle()) > 0) {
+            raiz.dir = new NoAN(raiz.show);
+            raiz.show = s;
+
+         } else {
+            raiz.dir = new NoAN(raiz.show);
+            raiz.show = raiz.esq.show;
+            raiz.esq.show = s;
+         }
+         raiz.esq.cor = raiz.dir.cor = false;
+
+      // Senao, a arvore tem tres ou mais elementos
+      } else {
+         inserir(s, null, null, null, raiz);
+      }
+      raiz.cor = false;
+   }
+
+    private void balancear(NoAN bisavo, NoAN avo, NoAN pai, NoAN i) {
+        // Se o pai tambem e preto, reequilibrar a arvore, rotacionando o avo
+        if (pai.cor == true) {
+            // 4 tipos de reequilibrios e acoplamento
+            if (pai.show.getTitle().compareTo(avo.show.getTitle()) > 0) {// rotacao a esquerda ou direita-esquerda
+                if (i.show.getTitle().compareTo(pai.show.getTitle()) > 0) {
+                    avo = rotacaoEsq(avo);
+                } else {
+                    avo = rotacaoDirEsq(avo);
+                }
+            } else { // rotacao a direita ou esquerda-direita
+                if (i.show.getTitle().compareTo(pai.show.getTitle()) < 0) {
+                    avo = rotacaoDir(avo);
+                } else {
+                    avo = rotacaoEsqDir(avo);
+                }
+            }
+            if (bisavo == null) {
+                raiz = avo;
+            } else if (avo.show.getTitle().compareTo(bisavo.show.getTitle()) < 0) {
+                bisavo.esq = avo;
+            } else {
+                bisavo.dir = avo;
+            }
+            // reestabelecer as cores apos a rotacao
+            avo.cor = false;
+            avo.esq.cor = avo.dir.cor = true;
+        }
+    }
+
+    private void inserir(Shows s, NoAN bisavo, NoAN avo, NoAN pai, NoAN i) throws Exception {
+        if (i == null) {
+            NoAN novo = new NoAN(s, true);
+            if (s.getTitle().compareTo(pai.show.getTitle()) < 0) {
+                pai.esq = novo;
+            } else {
+                pai.dir = novo;
+            }
+
+            if (pai.cor == true) {
+                balancear(bisavo, avo, pai, novo);
+            }
+
+        } else {
+            // Se for um nó 4, fragmenta e balanceia
+            if (i.esq != null && i.dir != null && i.esq.cor && i.dir.cor) {
+                i.cor = true;
+                i.esq.cor = false;
+                i.dir.cor = false;
+
+                if (i == raiz) {
+                    i.cor = false;
+                } else if (pai.cor == true) {
+                    balancear(bisavo, avo, pai, i);
+                }
+            }
+
+            if (s.getTitle().compareTo(i.show.getTitle()) < 0) {
+                inserir(s, avo, pai, i, i.esq);
+            } else if (s.getTitle().compareTo(i.show.getTitle()) > 0) {
+                inserir(s, avo, pai, i, i.dir);
+            } else {
+                throw new Exception("Erro inserir (elemento repetido)!");
+            }
+        }
+    }
+
+    public static boolean pesquisar(String s) throws Exception {
+        System.out.print("=>raiz ");
+        boolean resultado = pesquisar(s, raiz);
+        System.out.println(resultado ? "SIM" : "NAO");
+        return resultado;
+    }
+
+    public static boolean pesquisar(String s, NoAN i) throws Exception {
+        boolean resp;
+    if (i == null) {
+       resp = false;
+    }else if (s.equals(i.show.getTitle())) {
+        resp = true;
+    } else if (s.compareTo(i.show.getTitle()) < 0) {
+        System.out.print("esq ");
+        resp = pesquisar(s, i.esq);
+    } else {
+        System.out.print("dir ");
+        resp = pesquisar(s, i.dir);
+    }
+    return resp;
+}
+
+    
+}
+
+public class q4 {
+
+    // Adicione um contador de comparações (opcional)
+    public static int comparacoes = 0;
+
+    // Método para buscar o registro referente a um 'id' no csv.
+    public static Shows buscar(String caminhoArquivo, String idBuscado) throws Exception {
+        Scanner sc = new Scanner(new File(caminhoArquivo), "UTF-8");
+        Shows saida = null;
+        boolean encontrado = false;
+
+        while (sc.hasNextLine() && !encontrado) {
+            String linha = sc.nextLine();
+            Shows show = Shows.ler(linha);
+            if (show.getShow_id().equals(idBuscado)) {
+                saida = show;
+                encontrado = true;
+            }
+        }
+
+        sc.close();
+        return saida;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String file = "/tmp/disneyplus.csv";
+        long inicio = System.nanoTime(); // Início da contagem do tempo
+
+        Scanner scanner = new Scanner(System.in);
+        ArvoreALN arvore = new ArvoreALN();
+
+        String entrada = scanner.nextLine();
+
+        while (!entrada.equals("FIM")) {
+            Shows input = buscar(file, entrada);
+            if (input != null) {
+                arvore.inserir(input);
+            } else {
+                System.err.println("ID não encontrado ou inválido: " + entrada);
+            }
+            entrada = scanner.nextLine();
+        }
+
+        String chave = scanner.nextLine();
+        while (!chave.equals("FIM")) {
+            ArvoreALN.pesquisar(chave);
+            // Se quiser contar comparações, incremente comparacoes dentro do método pesquisar
+            chave = scanner.nextLine();
+        }
+
+        scanner.close();
+
+        long fim = System.nanoTime(); // Fim da contagem do tempo
+        double tempo = (fim - inicio) / 1e6; // tempo em milissegundos
+
+        // Escreve o tempo e comparações em um arquivo de log
+        PrintWriter log = new PrintWriter("793406_arvoreAN.txt");
+        log.printf("793406\t%.3f\t%d\n", tempo, comparacoes);
+        log.close();
+    }
+}

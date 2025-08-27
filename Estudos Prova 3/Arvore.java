@@ -17,7 +17,8 @@ public class Arvore{
         System.out.println(arv.pesquisar(5));
         System.out.println(arv.pesquisar(4));
         System.out.println(arv.pesquisar(10));
-        
+        System.out.println("Menor: " + arv.getMenor());
+        System.out.println("Maior: "+ arv.getMaior());
     }
 
 
@@ -86,6 +87,66 @@ public class Arvore{
         }
         return resp;
     }
+    // Métodos para encontrar o maior e o menor
+    public int getMaior(){
+        return getMaior(raiz);
+    }
+
+    public int getMaior(No raiz){
+        int maior = -1;
+        if(raiz != null){
+            for(No i = raiz; i != null; i = i.dir){
+            maior = i.elemento;
+            }
+        }
+        return maior;
+    }
+    public int getMenor(){
+        return getMenor(raiz);
+    }
+    public int getMenor(No raiz){
+        int menor = -1;
+        if (raiz != null){
+            for(No i = raiz; i != null; i = i.esq){
+                menor = i.elemento;
+            }
+        } 
+        return menor;
+    }
+
+    public No remover(int elemento, No i) throws Exception{
+        if(i==null){
+            throw new Exception("erro");
+        }
+        else if (elemento < i.elemento){
+            i.esq = remover(elemento, i.esq);
+        }
+        else if(elemento > i.elemento){
+            i.dir = remover(elemento, i.dir);
+        }
+        else if(i.dir == null){
+            i = i.esq;
+        }
+        else if(i.esq == null){
+            i = i.dir;
+        }
+        else{
+            i.esq = maiorEsq(i, i.esq);
+        }
+        return i;
+    }
+
+    public No maiorEsq(No i, No j){
+        if(j.dir == null){
+            i.elemento = j.elemento;
+            j = j.esq;
+        }
+        else{
+            j.dir = maiorEsq(i, j.dir);
+        }
+        return j;
+    }
+
 }
 
 class No{
